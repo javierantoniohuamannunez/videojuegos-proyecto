@@ -47,8 +47,7 @@ app.post("/api/bosses", async (req, res, next) => {
     next(error);
   }
 });
-// GET buscar por ID
-
+// GET buscar por ID  
 app.get("/api/bosses/:id", async (req, res, next) => {
   try {
     const { id } = req.params;
