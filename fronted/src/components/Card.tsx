@@ -5,7 +5,7 @@ type Props={
 }
 export default function Card({titulo, subtitulo, onClick}: Props) {
   return (
-    <div onClick={onclick}
+    <div onClick={onClick}
         style={{
            border: "1px solid gray",
         padding: "10px",
