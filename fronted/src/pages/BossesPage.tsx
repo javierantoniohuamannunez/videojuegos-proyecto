@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import * as bossService from "../services/bosses";
 import type { Boss } from "../type/Boss";
-
+import BossModal from "../components/BossModal";
+import Card from "../components/Card";
 export default function BossesPage() {
   const [bosses, setBosses] = useState<Boss[]>([]);
   const [loading, setLoading] = useState(true);
@@ -29,44 +30,20 @@ export default function BossesPage() {
       {bosses.length === 0 ? (
         <p>No hay bosses</p>
       ) : (
-        bosses.map((boss) => (
-          <div
-            key={boss._id}
-            onClick={() => setSelectedBoss(boss)}
-            style={{ cursor: "pointer", marginBottom: "10px" }}
-          >
-            {" "}
-            <h3>{boss.nombre}</h3>
-            <p>{boss.ubicacion}</p>
-            <p>{boss.dificultad}</p>
-          </div>
-        ))
+        <div className="grid">
+          {bosses.map((boss) => (
+            <Card
+              key={boss._id}
+              titulo={boss.nombre}
+              subtitulo={boss.ubicacion}
+              imagen={boss.imagen}
+              onClick={() => setSelectedBoss(boss)}
+            />
+          ))}
+        </div>
       )}
       {selectedBoss && (
-        <div style={{ marginTop: "30px", borderTop: "1px solid gray" }}>
-          <h2>Detalle del Boss</h2>
-
-          <h3>{selectedBoss.nombre}</h3>
-          <p>
-            <strong>Ubicación:</strong> {selectedBoss.ubicacion}
-          </p>
-          <p>
-            <strong>Dificultad:</strong> {selectedBoss.dificultad}
-          </p>
-          <p>
-            <strong>Tipo:</strong> {selectedBoss.tipo}
-          </p>
-          <p>
-            <strong>Vida:</strong> {selectedBoss.vida}
-          </p>
-
-          <h4>Recompensas:</h4>
-          <ul>
-            {selectedBoss.recompensas.map((r, i) => (
-              <li key={i}>{r}</li>
-            ))}
-          </ul>
-        </div>
+        <BossModal boss={selectedBoss} onClose={() => setSelectedBoss(null)} />
       )}
     </div>
   );
