@@ -1,7 +1,7 @@
 import axios from "axios";
 import type { Boss } from "../type/Boss";
 
-const BASE_URL = "http://locahost:3001/api/bosses";
+const BASE_URL = "http://localhost:3001/api/bosses";
 
 //get pedir todo los bosses
 export const getAll = async (): Promise<Boss[]> => {
