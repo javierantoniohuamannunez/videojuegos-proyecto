@@ -31,16 +31,18 @@ export default function DungeonsPage() {
       {dungeons.length === 0 ? (
         <p>No hay dungeons</p>
       ) : (
-        dungeons.map((dungeon) => (
-          <Card
-            key={dungeon._id}
-            titulo={dungeon.nombre}
-            subtitulo={dungeon.ubicacion}
-            onClick={() => setSelectedDungeon(dungeon)}
-          />
-        ))
+        <div className="grid">
+          {dungeons.map((dungeon) => (
+            <Card
+              key={dungeon._id}
+              titulo={dungeon.nombre}
+              subtitulo={dungeon.ubicacion}
+              imagen={dungeon.imagen}
+              onClick={() => setSelectedDungeon(dungeon)}
+            />
+          ))}
+        </div>
       )}
-
       {selectedDungeon && (
         <DungeonModal
           dungeon={selectedDungeon}

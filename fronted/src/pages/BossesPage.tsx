@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import * as bossService from "../services/bosses";
 import type { Boss } from "../type/Boss";
 import BossModal from "../components/BossModal";
-import Card from "../components/Card"
+import Card from "../components/Card";
 export default function BossesPage() {
   const [bosses, setBosses] = useState<Boss[]>([]);
   const [loading, setLoading] = useState(true);
@@ -30,20 +30,20 @@ export default function BossesPage() {
       {bosses.length === 0 ? (
         <p>No hay bosses</p>
       ) : (
-        bosses.map((boss) => (
+        <div className="grid">
+          {bosses.map((boss) => (
             <Card
-            key={boss._id}
-            titulo={boss.nombre}
-            subtitulo={boss.ubicacion}
-            onClick={() => setSelectedBoss(boss)}
-          />
-         
-        ))
+              key={boss._id}
+              titulo={boss.nombre}
+              subtitulo={boss.ubicacion}
+              imagen={boss.imagen}
+              onClick={() => setSelectedBoss(boss)}
+            />
+          ))}
+        </div>
       )}
       {selectedBoss && (
-        <BossModal 
-        boss={selectedBoss} 
-        onClose={() => setSelectedBoss(null)} />
+        <BossModal boss={selectedBoss} onClose={() => setSelectedBoss(null)} />
       )}
     </div>
   );

@@ -1,18 +1,47 @@
-type Props={
-    titulo: string,
-    subtitulo: string
-    onClick: () => void
+type Props = {
+  titulo: string
+  subtitulo: string
+  imagen?: string
+  onClick: () => void
 }
-export default function Card({titulo, subtitulo, onClick}: Props) {
+
+export default function Card({ titulo, subtitulo, imagen, onClick }: Props) {
   return (
-    <div onClick={onClick}
+    <div
+      onClick={onClick}
+      style={{
+        position: "relative",
+        width: "300px",
+        height: "180px",
+        borderRadius: "10px",
+        overflow: "hidden",
+        cursor: "pointer",
+        margin: "10px"
+      }}
+    >
+      <img
+        src={imagen || "https://via.placeholder.com/300"}
+        alt={titulo}
         style={{
-           border: "1px solid gray",
-        padding: "10px",
-        marginBottom: "10px",
-        cursor: "pointer"
-        }}>
-            <h3>{titulo}</h3><h3>{subtitulo}</h3>
-        </div>
-  );
+          width: "100%",
+          height: "100%",
+          objectFit: "cover"
+        }}
+      />
+
+      <div
+        style={{
+          position: "absolute",
+          bottom: 0,
+          width: "100%",
+          background: "linear-gradient(transparent, black)",
+          color: "white",
+          padding: "10px"
+        }}
+      >
+        <h3>{titulo}</h3>
+        <p>{subtitulo}</p>
+      </div>
+    </div>
+  )
 }
