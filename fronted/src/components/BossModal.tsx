@@ -8,26 +8,31 @@ export default function BossModal({ boss, onClose }: Props) {
   return (
     <div style={estiloOverlay}>
       <div style={estiloModal}>
-        <button onClick={onClose}>X</button>
-
-        <h2>{boss.nombre}</h2>
+        <button onClick={onClose} style={{ float: "right" }}>
+          ✖
+        </button>{" "}
+        <img
+          src={boss.imagen}
+          alt={boss.nombre}
+          style={{ width: "100%", borderRadius: "10px" }}
+        />
+        <h2>👑 {boss.nombre}</h2>
         <p>
-          <strong>Ubicación:</strong> {boss.ubicacion}
+          <strong>🔥 Vida:</strong> {boss.vida}
         </p>
         <p>
-          <strong>Dificultad:</strong> {boss.dificultad}
+          <strong>⚔️ Tipo:</strong> {boss.tipo}
         </p>
         <p>
-          <strong>Tipo:</strong> {boss.tipo}
+          <strong>📍 Ubicación:</strong> {boss.ubicacion}
         </p>
         <p>
-          <strong>Vida:</strong> {boss.vida}
+          <strong>⚡ Dificultad:</strong> {boss.dificultad}
         </p>
-
-        <h4>Recompensas:</h4>
+        <h4>🎁 Recompensas:</h4>
         <ul>
           {boss.recompensas.map((r, i) => (
-            <li key={i}>{r}</li>
+            <li key={i}>✨ {r}</li>
           ))}
         </ul>
       </div>
