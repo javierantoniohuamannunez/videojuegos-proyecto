@@ -6,7 +6,6 @@ import Card from "../components/Card";
 export default function DungeonsPage() {
   const [dungeons, setDungeons] = useState<Dungeon[]>([]);
   const [loading, setLoading] = useState(true);
-
   const [selectedDungeon, setSelectedDungeon] = useState<Dungeon | null>(null);
 
   useEffect(() => {
