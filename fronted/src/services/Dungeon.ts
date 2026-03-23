@@ -1,7 +1,7 @@
 import axios from "axios"
 import type { Dungeon } from "../type/Dungeon"
 
-const BASE_URL = "http://localhost:3001/api/dungeons"
+const BASE_URL = `${import.meta.env.VITE_API_URL}/dungeons`
 
 // GET todos
 export const getAll = async (): Promise<Dungeon[]> => {
