@@ -1,10 +1,13 @@
-# videojuegos-proyecto
+# Videojuegos Proyecto - Throne & Liberty
 
-Datos     → services
-Lógica    → pages
-Vista     → components
 
-´´´
+El proyecto sigue una separación clara de responsabilidades
+- Datos     → services
+- Lógica    → pages
+- Vista     → components
+
+## Flujo de la aplicación
+```
 API REST (Node + Express + MongoDB)
    │
    ▼
@@ -27,4 +30,18 @@ App
  └─ DungeonsPage
      ├─ Card
      └─ DungeonModal
-´´´
+```
+## Tecnologías utilizadas
+
+### Backend
+- Node.js
+- Express
+- MongoDB (Mongoose)
+
+### Frontend
+- React
+- TypeScript
+- Axios
+- Bootstrap (CDN)
+
+---
