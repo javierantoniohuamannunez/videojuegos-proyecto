@@ -38,7 +38,7 @@ export default function DungeonModal({ dungeon, onClose, onUpdate, onDelete }: P
     setEditando(false)
   }
 
-  return (
+   return (
     <div style={estiloOverlay}>
       <div style={estiloModal}>
 
@@ -57,7 +57,7 @@ export default function DungeonModal({ dungeon, onClose, onUpdate, onDelete }: P
             <p><strong>📍 Ubicación:</strong> {dungeon.ubicacion}</p>
             <p><strong>⚡ Dificultad:</strong> {dungeon.dificultad}</p>
             <p><strong>👑 Boss Final:</strong> {dungeon.bossFinal}</p>
-            <p><strong>🎯 Nivel recomendado:</strong> {dungeon.nivelRecomendado}</p>
+            <p><strong>🎯 Nivel:</strong> {dungeon.nivelRecomendado}</p>
 
             <h4>🎁 Recompensas:</h4>
             <ul>
@@ -66,15 +66,14 @@ export default function DungeonModal({ dungeon, onClose, onUpdate, onDelete }: P
               ))}
             </ul>
 
-            <button onClick={() => setEditando(true)}> Editar</button>
-            <button onClick={onDelete}>🗑️ Eliminar</button>
+            <button onClick={() => setEditando(true)}>Editar</button>
+            <button onClick={onDelete}>Eliminar</button>
           </>
         ) : (
           <>
             <h2>Editar Dungeon</h2>
 
             <input value={nombre} onChange={(e) => setNombre(e.target.value)} />
-
             <input value={ubicacion} onChange={(e) => setUbicacion(e.target.value)} />
 
             <select value={dificultad} onChange={(e) => setDificultad(e.target.value as any)}>
@@ -101,7 +100,7 @@ export default function DungeonModal({ dungeon, onClose, onUpdate, onDelete }: P
               onChange={(e) => setImagen(e.target.value)}
             />
 
-            <button onClick={guardarCambios}>Guardar</button>
+            <button onClick={guardarCambios}>💾 Guardar</button>
             <button onClick={() => setEditando(false)}>Cancelar</button>
           </>
         )}

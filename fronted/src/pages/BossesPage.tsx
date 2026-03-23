@@ -20,6 +20,10 @@ export default function BossesPage() {
   );
   const [vida, setVida] = useState(1000);
   const [imagen, setImagen] = useState("");
+
+  const [filtroDificultad, setFiltroDificultad] = useState("");
+  const [filtroTipo, setFiltroTipo] = useState("");
+
   useEffect(() => {
     bossService
       .getAll()
@@ -81,37 +85,47 @@ export default function BossesPage() {
     setBosses(data);
     setSelectedBoss(null);
   };
-  if (loading) return <p>Cargando...</p>;
+
+  const bossesFiltrados = bosses.filter((boss) => {
+    return (
+      (filtroDificultad === "" || boss.dificultad === filtroDificultad) &&
+      (filtroTipo === "" || boss.tipo === filtroTipo)
+    );
+  });
+
+  if (loading) return <p className="text-center mt-4">Cargando...</p>;
 
   return (
-    <div>
-      <button onClick={() => setMostrarForm(true)}>Crear Boss</button>
+    <div className="container mt-4">
+      <h1 className="mb-4">Bosses</h1>
 
-      <h2>Bosses</h2>
+      <button
+        className="btn btn-primary mb-3"
+        onClick={() => setMostrarForm(true)}
+      >
+        Crear Boss
+      </button>
 
       {mostrarForm && (
-        <div
-          style={{
-            marginTop: "20px",
-            border: "1px solid gray",
-            padding: "10px",
-          }}
-        >
+        <div className="card p-3 mb-4">
           <h3>Crear Boss</h3>
 
           <input
+            className="form-control mb-2"
             placeholder="Nombre"
             value={nombre}
             onChange={(e) => setNombre(e.target.value)}
           />
 
           <input
+            className="form-control mb-2"
             placeholder="Ubicación"
             value={ubicacion}
             onChange={(e) => setUbicacion(e.target.value)}
           />
 
           <select
+            className="form-select mb-2"
             value={dificultad}
             onChange={(e) => setDificultad(e.target.value as any)}
           >
@@ -120,45 +134,79 @@ export default function BossesPage() {
             <option value="dificil">Difícil</option>
           </select>
 
-          <select value={tipo} onChange={(e) => setTipo(e.target.value as any)}>
+          <select
+            className="form-select mb-2"
+            value={tipo}
+            onChange={(e) => setTipo(e.target.value as any)}
+          >
             <option value="world boss">World Boss</option>
             <option value="dungeon boss">Dungeon Boss</option>
             <option value="raid boss">Raid Boss</option>
           </select>
 
           <input
+            className="form-control mb-2"
             type="number"
             value={vida}
             onChange={(e) => setVida(Number(e.target.value))}
           />
 
           <input
+            className="form-control mb-2"
             placeholder="URL imagen"
             value={imagen}
             onChange={(e) => setImagen(e.target.value)}
           />
 
-          <button onClick={crearBoss}>Guardar</button>
+          <button className="btn btn-success me-2" onClick={crearBoss}>
+            Guardar
+          </button>
 
-          <button onClick={() => setMostrarForm(false)}>Cancelar</button>
+          <button
+            className="btn btn-secondary"
+            onClick={() => setMostrarForm(false)}
+          >
+            Cancelar
+          </button>
         </div>
       )}
 
-      {bosses.length === 0 ? (
-        <p>No hay bosses</p>
-      ) : (
-        <div className="grid">
-          {bosses.map((boss) => (
+      <div className="mb-4">
+        <h5>Filtros</h5>
+
+        <select
+          className="form-select mb-2"
+          onChange={(e) => setFiltroDificultad(e.target.value)}
+        >
+          <option value="">Todas las dificultades</option>
+          <option value="facil">Fácil</option>
+          <option value="normal">Normal</option>
+          <option value="dificil">Difícil</option>
+        </select>
+
+        <select
+          className="form-select"
+          onChange={(e) => setFiltroTipo(e.target.value)}
+        >
+          <option value="">Todos los tipos</option>
+          <option value="world boss">World Boss</option>
+          <option value="dungeon boss">Dungeon Boss</option>
+          <option value="raid boss">Raid Boss</option>
+        </select>
+      </div>
+
+      <div className="row">
+        {bossesFiltrados.map((boss) => (
+          <div key={boss._id} className="col-md-3 mb-4">
             <Card
-              key={boss._id}
               titulo={boss.nombre}
               subtitulo={boss.ubicacion}
               imagen={boss.imagen}
               onClick={() => setSelectedBoss(boss)}
             />
-          ))}
-        </div>
-      )}
+          </div>
+        ))}
+      </div>
 
       {selectedBoss && (
         <BossModal
