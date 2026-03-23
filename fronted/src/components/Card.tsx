@@ -1,57 +1,36 @@
 type Props = {
-  titulo: string;
-  subtitulo: string;
-  imagen?: string;
-  onClick: () => void;
-};
+  titulo: string
+  subtitulo: string
+  imagen?: string
+  onClick: () => void
+}
 
 export default function Card({ titulo, subtitulo, imagen, onClick }: Props) {
   return (
     <div
+      className="card text-white"
       onClick={onClick}
-      onMouseEnter={(e) => {
-        (e.currentTarget.firstChild as HTMLImageElement).style.transform =
-          "scale(1.1)";
-      }}
-      onMouseLeave={(e) => {
-        (e.currentTarget.firstChild as HTMLImageElement).style.transform =
-          "scale(1)";
-      }}
       style={{
-        position: "relative",
-        width: "300px",
-        height: "180px",
-        borderRadius: "10px",
-        overflow: "hidden",
+        background: "#111",
+        border: "1px solid #222",
         cursor: "pointer",
-        margin: "10px",
-        transition: "transform 0.3s",
+        transition: "0.3s"
       }}
     >
       <img
-        src={imagen || "https://via.placeholder.com/300"}
+        src={imagen}
         alt={titulo}
         style={{
           width: "100%",
-          height: "100%",
-          objectFit: "cover",
-          transition: "transform 0.3s",
+          height: "150px",
+          objectFit: "cover"
         }}
       />
 
-      <div
-        style={{
-          position: "absolute",
-          bottom: 0,
-          width: "100%",
-          background: "linear-gradient(transparent, black)",
-          color: "white",
-          padding: "10px",
-        }}
-      >
-        <h3>{titulo}</h3>
-        <p>{subtitulo}</p>
+      <div className="card-body">
+        <h5 className="card-title">{titulo}</h5>
+        <p className="card-text text-secondary">{subtitulo}</p>
       </div>
     </div>
-  );
+  )
 }
