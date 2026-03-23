@@ -162,7 +162,7 @@ app.delete("/api/dungeons/:id", async (req, res, next) => {
 app.use(notFound);
 app.use(handleErrors);
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3001;
 
 app.listen(PORT, () => {
   console.log(`Servidor funcionando en el puerto ${PORT}`);
