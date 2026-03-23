@@ -61,6 +61,20 @@ export default function DungeonsPage() {
     const data = await dungeonService.getAll();
     setDungeons(data);
   };
+  const editarDungeon = async (dungeonActualizado: Dungeon) => {
+    await dungeonService.update(dungeonActualizado._id!, dungeonActualizado);
+
+    const data = await dungeonService.getAll();
+    setDungeons(data);
+    setSelectedDungeon(null);
+  };
+  const eliminarDungeon = async (id: string) => {
+    await dungeonService.remove(id);
+
+    const data = await dungeonService.getAll();
+    setDungeons(data);
+    setSelectedDungeon(null);
+  };
   if (loading) return <p>Cargando...</p>;
 
   return (
@@ -87,6 +101,8 @@ export default function DungeonsPage() {
         <DungeonModal
           dungeon={selectedDungeon}
           onClose={() => setSelectedDungeon(null)}
+          onUpdate={editarDungeon}
+          onDelete={() => eliminarDungeon(selectedDungeon._id!)}
         />
       )}
       {mostrarForm && (

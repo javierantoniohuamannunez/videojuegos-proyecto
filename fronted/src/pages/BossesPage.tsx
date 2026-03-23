@@ -3,6 +3,7 @@ import * as bossService from "../services/bosses";
 import type { Boss } from "../type/Boss";
 import BossModal from "../components/BossModal";
 import Card from "../components/Card";
+
 export default function BossesPage() {
   const [bosses, setBosses] = useState<Boss[]>([]);
   const [loading, setLoading] = useState(true);
@@ -31,6 +32,8 @@ export default function BossesPage() {
         setLoading(false);
       });
   }, []);
+
+  //crearBosses
   const crearBoss = async () => {
     if (!nombre || !ubicacion) {
       alert("Nombre y ubicación son obligatorios");
@@ -61,31 +64,31 @@ export default function BossesPage() {
     const data = await bossService.getAll();
     setBosses(data);
   };
+
+  //eliminarBoss
+  const eliminarBoss = async (id: string) => {
+    await bossService.remove(id);
+
+    const data = await bossService.getAll();
+    setBosses(data);
+    setSelectedBoss(null);
+  };
+  //editarbosses
+  const editarBoss = async (bossActualizado: Boss) => {
+    await bossService.update(bossActualizado._id!, bossActualizado);
+
+    const data = await bossService.getAll();
+    setBosses(data);
+    setSelectedBoss(null);
+  };
   if (loading) return <p>Cargando...</p>;
 
   return (
     <div>
       <button onClick={() => setMostrarForm(true)}>Crear Boss</button>
+
       <h2>Bosses</h2>
 
-      {bosses.length === 0 ? (
-        <p>No hay bosses</p>
-      ) : (
-        <div className="grid">
-          {bosses.map((boss) => (
-            <Card
-              key={boss._id}
-              titulo={boss.nombre}
-              subtitulo={boss.ubicacion}
-              imagen={boss.imagen}
-              onClick={() => setSelectedBoss(boss)}
-            />
-          ))}
-        </div>
-      )}
-      {selectedBoss && (
-        <BossModal boss={selectedBoss} onClose={() => setSelectedBoss(null)} />
-      )}
       {mostrarForm && (
         <div
           style={{
@@ -139,6 +142,31 @@ export default function BossesPage() {
 
           <button onClick={() => setMostrarForm(false)}>Cancelar</button>
         </div>
+      )}
+
+      {bosses.length === 0 ? (
+        <p>No hay bosses</p>
+      ) : (
+        <div className="grid">
+          {bosses.map((boss) => (
+            <Card
+              key={boss._id}
+              titulo={boss.nombre}
+              subtitulo={boss.ubicacion}
+              imagen={boss.imagen}
+              onClick={() => setSelectedBoss(boss)}
+            />
+          ))}
+        </div>
+      )}
+
+      {selectedBoss && (
+        <BossModal
+          boss={selectedBoss}
+          onClose={() => setSelectedBoss(null)}
+          onUpdate={editarBoss}
+          onDelete={() => eliminarBoss(selectedBoss._id!)}
+        />
       )}
     </div>
   );
