@@ -1,52 +1,64 @@
-import { useEffect, useState } from "react"
-import * as dungeonService from "../services/Dungeon"
-import type { Dungeon } from "../type/Dungeon"
-import DungeonModal from "../components/DungeonModal"
-import Card from "../components/Card"
+import { useEffect, useState } from "react";
+import * as dungeonService from "../services/Dungeon";
+import type { Dungeon } from "../type/Dungeon";
+import DungeonModal from "../components/DungeonModal";
+import Card from "../components/Card";
 
 export default function DungeonsPage() {
+  const [dungeons, setDungeons] = useState<Dungeon[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedDungeon, setSelectedDungeon] = useState<Dungeon | null>(null);
 
-  const [dungeons, setDungeons] = useState<Dungeon[]>([])
-  const [loading, setLoading] = useState(true)
-  const [selectedDungeon, setSelectedDungeon] = useState<Dungeon | null>(null)
+  const [mostrarForm, setMostrarForm] = useState(false);
+  const [nombre, setNombre] = useState("");
+  const [ubicacion, setUbicacion] = useState("");
+  const [dificultad, setDificultad] = useState<"facil" | "normal" | "dificil">(
+    "facil",
+  );
+  const [bossFinal, setBossFinal] = useState("");
+  const [nivelRecomendado, setNivelRecomendado] = useState(20);
+  const [imagen, setImagen] = useState("");
+  const [recompensas, setRecompensas] = useState("");
 
-  const [mostrarForm, setMostrarForm] = useState(false)
-  const [nombre, setNombre] = useState("")
-  const [ubicacion, setUbicacion] = useState("")
-  const [dificultad, setDificultad] = useState<"facil" | "normal" | "dificil">("facil")
-  const [bossFinal, setBossFinal] = useState("")
-  const [nivelRecomendado, setNivelRecomendado] = useState(1)
-  const [imagen, setImagen] = useState("")
-
-  const [filtroDificultad, setFiltroDificultad] = useState("")
+  const [filtroDificultad, setFiltroDificultad] = useState("");
 
   useEffect(() => {
-    dungeonService.getAll()
-      .then(data => {
-        setDungeons(data)
-        setLoading(false)
+    dungeonService
+      .getAll()
+      .then((data) => {
+        setDungeons(data);
+        setLoading(false);
       })
-      .catch(err => {
-        console.error(err)
-        setLoading(false)
-      })
-  }, [])
+      .catch((err) => {
+        console.error(err);
+        setLoading(false);
+      });
+  }, []);
   const crearDungeon = async () => {
     if (!nombre || !ubicacion || !bossFinal) {
       alert("Nombre, ubicación y boss final son obligatorios");
       return;
     }
+    if (nivelRecomendado < 20) {
+      alert("El nivel minimo es 20");
+      return;
+    }
 
-    await dungeonService.create({
+    const nuevo = {
       nombre,
       ubicacion,
       dificultad,
       bossFinal,
       nivelRecomendado,
       activo: true,
-      recompensas: [],
+      recompensas: recompensas
+        ? recompensas.split(",").map((r) => r.trim())
+        : [],
       imagen,
-    });
+    };
+    console.log("ENVIANDO:", nuevo);
+
+    await dungeonService.create(nuevo);
 
     // limpiar
     setNombre("");
@@ -76,21 +88,20 @@ export default function DungeonsPage() {
     setDungeons(data);
     setSelectedDungeon(null);
   };
-  const dungeonsFiltrados = dungeons.filter(d =>
-    filtroDificultad === "" || d.dificultad === filtroDificultad
-  )
- if (loading) return <p className="text-center mt-4">Cargando...</p>
+  const dungeonsFiltrados = dungeons.filter(
+    (d) => filtroDificultad === "" || d.dificultad === filtroDificultad,
+  );
+  if (loading) return <p className="text-center mt-4">Cargando...</p>;
 
   return (
     <div className="container mt-4">
-
       <h1 className="mb-4">Dungeons</h1>
 
       <button
         className="btn btn-primary mb-3"
         onClick={() => setMostrarForm(true)}
       >
-         Crear Dungeon
+        Crear Dungeon
       </button>
 
       {mostrarForm && (
@@ -131,6 +142,7 @@ export default function DungeonsPage() {
           <input
             className="form-control mb-2"
             type="number"
+            min={20}
             value={nivelRecomendado}
             onChange={(e) => setNivelRecomendado(Number(e.target.value))}
           />
@@ -140,6 +152,13 @@ export default function DungeonsPage() {
             placeholder="URL imagen"
             value={imagen}
             onChange={(e) => setImagen(e.target.value)}
+          />
+
+          <input
+            className="form-control mb-2"
+            placeholder="Recompensas (separadas por coma)"
+            value={recompensas}
+            onChange={(e) => setRecompensas(e.target.value)}
           />
 
           <button className="btn btn-success me-2" onClick={crearDungeon}>
@@ -170,7 +189,7 @@ export default function DungeonsPage() {
       </div>
 
       <div className="row">
-        {dungeonsFiltrados.map(dungeon => (
+        {dungeonsFiltrados.map((dungeon) => (
           <div key={dungeon._id} className="col-md-3 mb-4">
             <Card
               titulo={dungeon.nombre}
@@ -190,7 +209,6 @@ export default function DungeonsPage() {
           onDelete={() => eliminarDungeon(selectedDungeon._id!)}
         />
       )}
-
     </div>
-  )
+  );
 }
